@@ -1,19 +1,25 @@
 import React, { useContext, useState } from 'react';
 import { AlertContext } from '../context/alert/alertContext';
+import { GithubContext } from '../context/github/githubContext';
 
 export const Search = () => {
     const [value, setState] = useState('')
 
-    const {show} = useContext(AlertContext);
+    const alert = useContext(AlertContext);
+    const github = useContext(GithubContext);
+
     const onSubmit = (event) => {
         if (event.key !== 'Enter') {
             return
         }
 
+        github.clearUsers();
+
         if (value.trim()) {
-            console.log('Make request width:', value)
+            alert.hide()
+            github.search(value.trim());
         } else {
-            alert("Введите данные пользователя!")
+            alert.show("Введите данные пользователя!")
         }
     }
 
